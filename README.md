@@ -90,6 +90,30 @@ int main(void)
 http://tool.chinaz.com/tools/imgtobase/
 
 
+## **read prcture ->Base64 -> Josn  -> psot **
+
+
+```
+Mat img = imread("./face.jpg");
+
+string strIn;
+string strOut;
+
+MatToJpg( img, strIn);
+unsigned char * uData = (unsigned char *)strIn.data();
+unsigned int nLen = strIn.length();
+
+strOut.resize(nLen * 2 + 1, '\0');
+DWORD nLenBase64 = strOut.length();
+
+base64::encode(uData, nLen, (unsigned char *)strOut.data(), &nLenBase64);
+
+trim(strOut);
+
+
+
+
+```
 
 
 
