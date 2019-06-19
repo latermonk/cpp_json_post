@@ -94,21 +94,56 @@ http://tool.chinaz.com/tools/imgtobase/
 
 
 ```
-Mat img = imread("./face.jpg");
+void MatToJpg(const cv::Mat &mat, std::string &strImg)
+{
+	vector<uchar> buff;//buffer for coding 
+	vector<int> param = vector<int>(2);
+	param[0] = CV_IMWRITE_JPEG_QUALITY;
+	param[1] = 95;//default(95) 0-100 
+	imencode(".jpg", mat, buff, param);
 
-string strIn;
-string strOut;
+	unsigned int image_size = buff.size();
+	strImg.resize(image_size, '\0');
+	uchar* image = (uchar*)strImg.data();
 
-MatToJpg( img, strIn);
-unsigned char * uData = (unsigned char *)strIn.data();
-unsigned int nLen = strIn.length();
+	for (unsigned int i = 0; i < image_size; i++)
+		image[i] = (buff[i]);
+	vector<uchar>().swap(buff);
+	vector<int>().swap(param);
+}
 
-strOut.resize(nLen * 2 + 1, '\0');
-DWORD nLenBase64 = strOut.length();
 
-base64::encode(uData, nLen, (unsigned char *)strOut.data(), &nLenBase64);
+void trim(string &s)
+{
+	int index = 0;
+	if (!s.empty())
+	{
+		while ((index = s.find(' ', index)) != string::npos)
+		{
+			s.erase(index, 1);
+		}
+	}
+}
 
-trim(strOut);
+int main()
+{
+	string strIn;
+	string strOut;
+
+	Mat img = imread("./face.jpg");
+	MatToJpg( img, strIn);
+	unsigned char * uData = (unsigned char *)strIn.data();
+	unsigned int nLen = strIn.length();
+	strOut.resize(nLen * 2 + 1, '\0');
+	DWORD nLenBase64 = strOut.length();
+	base64::encode(uData, nLen, (unsigned char *)strOut.data(), &nLenBase64);
+	
+	trim(strOut);
+}
+
+
+
+
 
 
 
