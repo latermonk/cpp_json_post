@@ -139,6 +139,10 @@ int main()
 	base64::encode(uData, nLen, (unsigned char *)strOut.data(), &nLenBase64);
 	
 	trim(strOut);
+
+
+	cout << "base64 code of the image = " << strOut << endl;
+
 }
 
 
